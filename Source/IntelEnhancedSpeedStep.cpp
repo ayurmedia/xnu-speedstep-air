@@ -916,7 +916,7 @@ bool AutoThrottler::perfTimerEvent(IOTimerEventSource* src, int count) {
 	
 	// Used = % used x 10
 	used = ((total - idle) * 1000) / total;
-	info( "used %ld ", used );
+	dbg( "used %ld ", used );
   
 	// If used > 95% we can't really guess how much is needed, so step to highest speed
 //	if (used >= 950)
