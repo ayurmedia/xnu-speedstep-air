@@ -50,7 +50,7 @@ static int iess_handle_curvolt SYSCTL_HANDLER_ARGS
 		if (err) return err;
 		int pstate   = FindClosestPState(getCurrentFrequency());
 		int origvolt = VID_to_mV(PStates[pstate].OriginalVoltage);
-		if (wantedvolt > origvolt+100) {
+		if (wantedvolt > origvolt+400) {
 			wantedvolt = origvolt;
 			warn("Will not set voltage more than 100 mV higher than factory spec %d mV\n", origvolt);
 		}
@@ -367,6 +367,13 @@ bool com_reidburke_air_IntelEnhancedSpeedStep::start(IOService *provider) {
 	
 	dbg("Starting\n");
 	
+  info("cpuid_thermal_thresholds %u \n", cpuid_info()->cpuid_thermal_thresholds );
+  info("cpuid_thermal_sensor %u \n", cpuid_info()->cpuid_thermal_sensor );
+  info("cpuid_thermal_dynamic_acceleration %u \n", cpuid_info()->cpuid_thermal_dynamic_acceleration );
+  info("cpuid_thermal_ACNT_MCNT %u \n", cpuid_info()->cpuid_thermal_ACNT_MCNT );
+  info("cpuid_brand_string %s \n", cpuid_info()->cpuid_brand_string );
+  
+  
 	/* Create PState tables */
 	if (!createPStateTable(PStates, &NumberOfPStates))
 		return false;
@@ -394,7 +401,7 @@ bool com_reidburke_air_IntelEnhancedSpeedStep::start(IOService *provider) {
 	{
 		dbg("Throttling to default PState %d as specified in Info.plist\n", DefaultPState);
 		throttleAllCPUs(&PStates[DefaultPState]); // then throttle to that value
-    
+    IOSleep(1);
     throttleAllCPUs(&PStates[DefaultPState]);
     
 	}
@@ -476,10 +483,7 @@ uint16_t getCurrentFrequency() {
 uint16_t VID_to_mV(uint8_t VID) {
 	checkForPenryn(); // early on, so we can display proper mV values
 	
-  if (Is45nmPenryn && VID == 71 ) {
-    return 1995; 
-  }
-    
+ 
   
   if (Is45nmPenryn)
 		return (((int)VID * 125) + 7125) / 10; // to avoid using float
@@ -497,11 +501,17 @@ uint8_t mV_to_VID(uint16_t mv) {
 	else
 		r =  (mv - 700) / 16;
   
-  info ("mV_to_VID in: %d r: %d (45nm: %d) \n", mv, r , Is45nmPenryn);
+  info ("mV_to_VID in: %d vid: %d (45nm: %d) \n", mv, r , Is45nmPenryn);
   return r;
 }
 
 inline uint16_t FID_to_MHz(uint8_t x) {
+  checkForPenryn(); // early on, so we can display proper mV values
+  
+  if (Is45nmPenryn && x == 71 ) {
+    return 1995;
+  }
+  
 	bool nby2 = x & 0x80;
 	uint8_t realfid = x & 0x7f; // removes the bit from 0x80
 	if (nby2)
@@ -510,6 +520,8 @@ inline uint16_t FID_to_MHz(uint8_t x) {
 }
 
 static inline uint32_t FID_to_Hz(uint8_t x) {
+  
+  
 	bool nby2 = x & 0x80;
 	uint8_t realfid = x & 0x7f;
 	if (nby2)
@@ -522,7 +534,7 @@ inline uint8_t MHz_to_FID(uint16_t x) {
 
   // FixMe: flexible with FSB != 266. (overclocking ?)
   // special for 45nm, multipier: 6,7,71
-  if ( Is45nmPenryn &&  ( x > 1990 ) ) {
+  if ( Is45nmPenryn &&  ( x == 1995 ) ) {
     return 71;
   }
 	
@@ -650,8 +662,8 @@ bool createPStateTable(PState* pS, unsigned int* numStates) {
 			NumberOfPStates--;
 			continue;
 		}
-	
-		if (acpifreq < 1000 && !Below1Ghz) {
+
+    if (acpifreq < 1000 && !Below1Ghz) {
 			warn("%d MHz disabled because your processor or kernel doesn't support it.\n",acpifreq);
 			NumberOfPStates--;
 			continue;
@@ -710,13 +722,14 @@ void throttleCPU(void *t) {
 	newfreq = FID_to_Hz(FID(msr)); // after setting ctl in msr
 	
 	//if (RtcFixKernel && !ConstantTSC) {
-		//rtc_clock_stepping(newfreq, oldfreq);
+	//	rtc_clock_stepping(newfreq, oldfreq);
 	//}
 	
 	wrmsr64(INTEL_MSR_PERF_CTL, msr); // and write it to the processor
 	
-	//if (RtcFixKernel && !ConstantTSC)
-		//rtc_clock_stepped(newfreq, oldfreq);
+	//if (RtcFixKernel && !ConstantTSC) {
+	//	rtc_clock_stepped(newfreq, oldfreq);
+  //}
 }
 
 void disableInterrupts(__unused void *t) {

@@ -13,6 +13,7 @@
 		32D94FCA0562CBF700B6AF17 /* IntelEnhancedSpeedStep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A224C3FFF42367911CA2CB7 /* IntelEnhancedSpeedStep.cpp */; settings = {ATTRIBUTES = (); }; };
 		8F81F68A0E4132350025A326 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F81F6890E4132350025A326 /* Utility.h */; };
 		B5014612187A4B330078DE95 /* cpuid_old.h in Headers */ = {isa = PBXBuildFile; fileRef = B5014611187A4B330078DE95 /* cpuid_old.h */; };
+		B51F6E5D18F971D9002A331C /* Info copy.plist in Resources */ = {isa = PBXBuildFile; fileRef = B51F6E5C18F971D9002A331C /* Info copy.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		8DA8362C06AD9B9200E5AC22 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 		8F81F6890E4132350025A326 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		B5014611187A4B330078DE95 /* cpuid_old.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpuid_old.h; sourceTree = "<group>"; };
+		B51F6E5C18F971D9002A331C /* Info copy.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B51F6E5C18F971D9002A331C /* Info copy.plist */,
 				32D94FCF0562CBF700B6AF17 /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -144,6 +147,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51F6E5D18F971D9002A331C /* Info copy.plist in Resources */,
 				32D94FC80562CBF700B6AF17 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
