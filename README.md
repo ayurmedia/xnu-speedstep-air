@@ -46,11 +46,39 @@ Info.plist > IOKitPersonalities > IntelEnhancedSpeedStep > PStateTableOFF
 and load the kext it will show the available "vendor" Frequencies and Voltages in 
 console.log (start console.app and filter by "IntelEnh" to find it easily. 
 
+A) Workaround 
 For me it does not work together with AppleIntelCPUPowerManagement * .kext
 so i move them out of /S/L/E/. to a backup-location where i can restore the kext if i need to. 
 
-i does work even with APICP.Management in place, but then the Voltage will be reset
+it does work even with APICP.Management in place, but then the Voltage will be reset
 by the AppleIntel * .kext all the time. 
+
+B) Workaround
+Update, i am now running osx 10.9.5 (dont like the plastic UI in 10.10 so i will not upgrade)
+I tried it again, as default speedstep in osx uses turbo-boost and jumps Voltage up to 1.1V
+which really produces heat. 
+i found another tip here: 
+https://discussions.apple.com/thread/4405099?start=15&tstart=0
+so if you move the Macbook<vesion>.plist from 
+/System/Library/Extensions/IOPlatformPluginFamily.kext/Contents/Plugins/ACPI_SMC_PlatformPlugin.kext/Contents/Resources
+then it will not use speedstep and xnu-speedstep-air can control your cpu. 
+i was lazy and just gziped the plist so i dont have to move it arround, if its zipped osx cannot read it 
+eg. "sudo gzip MacBook5_1.plist"
+(and "gunzip MacBook5_1.plist.gz" if you want to undo it)
+
+If this Plist is deactivated then also Coolbook works, but Coolbook only shows your CPU but somehow cannot control the CPU, but its fine to have it as a readout of your CPU Speed and Voltage. 
+
+Now my Max CPU is 9.25V (showing as 0.93V in MenuStats) and stepping down to 0.79V by. 
+also running "yes > /dev/null" (run one for each core, here i run 2 times as i have Core2Duo) so i get 100% CPU . 
+Still Fan keeps slow , temp is low. 
+
+I also replaced the paste on the heatsink of CPU and GPU (very tricky assembly on Macbook-Unibody 2008) and now it runs much cooler. Arctic-Silver or similar really works (especially if the old termal paste is 7Years) . 
+
+I also use Bootcamp in the moment with Win10-Technical-Preview and overclocking with Nvidia-Tools i can Bump FSB from 266Mhz to Stable 310Mhz, while keeping CPU < 80°C , also GPU can be Overclocked to 500Mhz/1100Mhz (or 530Mhz) in Nvidia-Properties quite stable. In Grid-Autosport it gives an improvement of about 5FPS , going from 28FPS to 34FPS, so i can have stable 30FPS most of the time. Not so perfect but playable. If you have old Hardware and good internet-Connection you can use games.onlive.com where i get solid 60fps in games with high setting in games (locally 30fps in ultra-low) with minimal lag (20ms) over the internet. 
+only drawback is little lag (really not to bad if you get a good server) and some compression due to streaming. 
+
+With combination of new Termal Paste, and Xnu-Speedstep i am now idle in 53°C (i Menu stats) or 46°C in Coolbook, and 75°C at both cpu 100% compared to idle 80°C and more on Usage before. 
+
 
 The behavior is similar like you can make Coolbook work with 10.8 or 10.9.
 
