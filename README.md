@@ -66,9 +66,9 @@ i was lazy and just gziped the plist so i dont have to move it arround, if its z
 eg. "sudo gzip MacBook5_1.plist"
 (and "gunzip MacBook5_1.plist.gz" if you want to undo it)
 
-If this Plist is deactivated then also Coolbook works, but Coolbook only shows your CPU but somehow cannot control the CPU, but its fine to have it as a readout of your CPU Speed and Voltage. 
+If this Plist is deactivated then also Coolbook works, but only shows your CPU and somehow cannot control the CPU, but its fine to have it as a readout of your CPU Speed and Voltage. 
 
-Now my Max CPU is 9.25V (showing as 0.93V in MenuStats) and stepping down to 0.79V by. 
+Now my Max CPU is 0.9250V (showing as 0.93V in MenuStats) and stepping down to 0.79V by. 
 also running "yes > /dev/null" (run one for each core, here i run 2 times as i have Core2Duo) so i get 100% CPU . 
 Still Fan keeps slow , temp is low. 
 
